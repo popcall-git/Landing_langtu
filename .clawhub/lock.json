@@ -64,6 +64,10 @@
     "frontend-design-3": {
       "version": "0.1.0",
       "installedAt": 1774452143454
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1774454587658
     }
   }
 }
