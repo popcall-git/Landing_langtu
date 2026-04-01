@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狼途世界 - 精彩视频社区</title>
+    <meta name="description" content="发现最有趣的视频内容，加入狼途世界社区，与百万用户一起分享快乐">
+    <style>
+        :root {
+            --primary: oklch(0.65 0.25 280);
+            --primary-dark: oklch(0.55 0.25 280);
+            --bg-dark: #0f0f11;
+            --bg-card: #1a1a1f;
+            --bg-hover: #25252b;
+            --text-primary: #ffffff;
+            --text-secondary: oklch(0.7 0.02 250);
+            --text-muted: oklch(0.5 0.02 250);
+            --accent: oklch(0.7 0.2 340);
+            --success: oklch(0.65 0.2 150);
+            --spacing: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', 'Sora', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+            padding: calc(var(--spacing) * 8) calc(var(--spacing) * 3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(60px);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: oklch(0.2 0.05 280);
+            color: var(--primary);
+            padding: calc(var(--spacing) * 1) calc(var(--spacing) * 3);
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing) * 3);
+            border: 1px solid oklch(0.3 0.1 280);
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: calc(var(--spacing) * 2);
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 0%, oklch(0.8 0.1 280) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto calc(var(--spacing) * 4);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 1);
+            background: var(--primary);
+            color: white;
+            padding: calc(var(--spacing) * 2) calc(var(--spacing) * 5);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .cta-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: calc(var(--spacing) * 6);
+            margin-top: calc(var(--spacing) * 6);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: calc(var(--spacing) * 0.5);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3);
+        }
+
+        /* Section */
+        .section {
+            padding: calc(var(--spacing) * 8) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: calc(var(--spacing) * 6);
+        }
+
+        .section-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing) * 2);
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: calc(var(--spacing) * 3);
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: calc(var(--spacing) * 4);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: oklch(0.3 0.1 280);
+            background: var(--bg-hover);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: oklch(0.2 0.1 280);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: calc(var(--spacing) * 2);
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing) * 1);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Video Cards */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: calc(var(--spacing) * 4);
+        }
+
+        .video-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid transparent;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--bg-hover) 0%, var(--bg-card) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--primary) 0%, transparent 50%);
+            opacity: 0.2;
+        }
+
+        .play-button {
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            transition: all 0.2s;
+        }
+
+        .video-card:hover .play-button {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: calc(var(--spacing) * 1.5);
+            right: calc(var(--spacing) * 1.5);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: calc(var(--spacing) * 0.5) calc(var(--spacing) * 1);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .video-info {
+            padding: calc(var(--spacing) * 3);
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing) * 1.5);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 2);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .video-views {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 0.5);
+        }
+
+        .video-hot {
+            display: inline-flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 0.5);
+            background: oklch(0.25 0.15 30);
+            color: oklch(0.7 0.2 30);
+            padding: calc(var(--spacing) * 0.5) calc(var(--spacing) * 1);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing) * 1);
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(var(--spacing) * 3);
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: calc(var(--spacing) * 4);
+            border: 1px solid oklch(0.2 0.05 280);
+        }
+
+        .testimonial-content {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: calc(var(--spacing) * 3);
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 2);
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing) * 0.25);
+        }
+
+        .author-badge {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            border-radius: 24px;
+            padding: calc(var(--spacing) * 8);
+            text-align: center;
+            margin-top: calc(var(--spacing) * 8);
+            border: 1px solid oklch(0.2 0.1 280);
+        }
+
+        .cta-section h2 {
+            font-size: clamp(24px, 3vw, 36px);
+            margin-bottom: calc(var(--spacing) * 2);
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: calc(var(--spacing) * 4);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid oklch(0.2 0.05 280);
+            padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: calc(var(--spacing) * 6) calc(var(--spacing) * 2);
+            }
+
+            .stats {
+                gap: calc(var(--spacing) * 4);
+            }
+
+            .container {
+                padding: calc(var(--spacing) * 4) calc(var(--spacing) * 2);
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <span class="hero-badge">🎬 百万用户的选择</span>
+        <h1>发现生活中的<br>每一个精彩瞬间</h1>
+        <p>狼途世界是一个充满活力的视频分享社区，汇聚搞笑、情感、动漫、短剧等丰富内容，让你的每一天都充满欢笑</p>
+        <a href="http://www.langtushijie.com" class="cta-button">
+            立即探索
+            <span>→</span>
+        </a>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value">100 万+</div>
+                <div class="stat-label">活跃用户</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">50 万+</div>
+                <div class="stat-label">优质视频</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">1000 万+</div>
+                <div class="stat-label">每日播放</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- 热门视频 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">🔥 热门推荐</h2>
+                <p class="section-subtitle">精选全网最火视频，让你一次看个够</p>
+            </div>
+            <div class="video-grid">
+                <!-- 视频 1 -->
+                <a href="http://www.langtushijie.com/video/94563107870158848/%E7%9B%98%E7%82%B9%E8%AE%BA%E5%8F%91%E5%9E%8B%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7%EF%BC%8C" class="video-card" target="_blank">
+                    <div class="video-thumbnail">
+                        <div class="play-button">▶</div>
+                        <span class="video-duration">4:17</span>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-hot">🔥 5.0k 次播放</span>
+                        <h3 class="video-title">盘点论发型的重要性，头发一撩，实习医生秒变主任医师</h3>
+                        <div class="video-meta">
+                            <span class="video-views">👁️ 5.0k 观看</span>
+                            <span>⏱️ 4:17</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 视频 2 -->
+                <a href="http://www.langtushijie.com/video/94563096906248192/%E7%9B%98%E7%82%B9%E9%82%A3%E4%BA%9B%E2%80%9C%E5%A7%90%E5%BC%9F%E6%83%85%E6%B7%B1%E2%80%9D" class="video-card" target="_blank">
+                    <div class="video-thumbnail">
+                        <div class="play-button">▶</div>
+                        <span class="video-duration">5:04</span>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-hot">🔥 4.9k 次播放</span>
+                        <h3 class="video-title">盘点那些"姐弟情深"名场面，来自姐姐的血脉压制</h3>
+                        <div class="video-meta">
+                            <span class="video-views">👁️ 4.9k 观看</span>
+                            <span>⏱️ 5:04</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 社区特色 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">✨ 为什么选择狼途世界</h2>
+                <p class="section-subtitle">我们致力于打造最好的视频分享体验</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">精准推荐</h3>
+                    <p class="feature-desc">智能算法为你推送感兴趣的内容，每一次打开都有新惊喜</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 class="feature-title">活跃社区</h3>
+                    <p class="feature-desc">与志同道合的朋友互动，分享观点，收获共鸣</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">多端同步</h3>
+                    <p class="feature-desc">手机、平板、电脑无缝切换，随时随地观看</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">内容审核</h3>
+                    <p class="feature-desc">严格的内容审核机制，确保健康积极的社区环境</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评论 -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">💬 用户怎么说</h2>
+                <p class="section-subtitle">来自社区成员的真实反馈</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">
+                        "狼途世界真的是我见过最有趣的视频社区了！内容质量高，评论区也很有意思，每天下班后都要刷一会儿～"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">李</div>
+                        <div class="author-info">
+                            <div class="author-name">李先生</div>
+                            <div class="author-badge">📍 北京 · 活跃用户</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">
+                        "作为一个内容创作者，这里的用户真的很友好，互动率高，让我有持续创作的动力。推荐算法也很精准！"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">张</div>
+                        <div class="author-info">
+                            <div class="author-name">张创作者</div>
+                            <div class="author-badge">🎬 UP 主 · 10 万粉丝</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">
+                        "界面设计简洁，加载速度快，最重要的是内容真的很丰富，从搞笑短剧到深度解析应有尽有！"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">王</div>
+                        <div class="author-info">
+                            <div class="author-name">王女士</div>
+                            <div class="author-badge">📍 上海 · 资深用户</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>准备好开始探索了吗？</h2>
+            <p>加入狼途世界，发现更多精彩内容，与百万用户一起分享快乐时光</p>
+            <a href="http://www.langtushijie.com" class="cta-button">
+                访问狼途世界
+                <span>→</span>
+            </a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 狼途世界 LangtuWorld. All rights reserved.</p>
+        <p style="margin-top: 8px;">精彩动漫电影短剧社区 | 领先的视频分享平台</p>
+    </footer>
+
+    <script>
+        // 简单的入场动画
+        document.querySelectorAll('.feature-card, .testimonial-card, .video-card').forEach((el, index) => {
+            el.classList.add('animate-in');
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>
