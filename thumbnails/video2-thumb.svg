@@ -1,13 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
   <defs>
     <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#2d1b4e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a1942;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="accent2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:0.9" />
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="1280" height="720" fill="url(#bg2)"/>
-  <circle cx="640" cy="360" r="80" fill="rgba(255,255,255,0.3)"/>
-  <polygon points="620,330 620,390 670,360" fill="white"/>
-  <text x="640" y="520" font-family="system-ui, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">姐弟情深</text>
-  <text x="640" y="570" font-family="system-ui, sans-serif" font-size="28" fill="rgba(255,255,255,0.8)" text-anchor="middle">来自姐姐的血脉压制</text>
+  
+  <!-- 背景 -->
+  <rect width="640" height="360" fill="url(#bg2)"/>
+  
+  <!-- 装饰性几何图形 -->
+  <circle cx="80" cy="100" r="50" fill="url(#accent2)" opacity="0.08"/>
+  <circle cx="580" cy="260" r="70" fill="url(#accent2)" opacity="0.08"/>
+  <polygon points="520,60 580,120 520,180 460,120" fill="url(#accent2)" opacity="0.05"/>
+  
+  <!-- 星星装饰 -->
+  <text x="120" y="80" font-size="20" fill="url(#accent2)" opacity="0.6">✦</text>
+  <text x="550" y="100" font-size="16" fill="url(#accent2)" opacity="0.4">✦</text>
+  <text x="100" y="280" font-size="14" fill="url(#accent2)" opacity="0.5">✦</text>
+  <text x="520" y="300" font-size="18" fill="url(#accent2)" opacity="0.3">✦</text>
+  
+  <!-- 高跟鞋图标 - 明星款 -->
+  <g transform="translate(320, 170)" filter="url(#glow2)">
+    <!-- 闪亮效果 -->
+    <circle cx="-60" cy="-40" r="3" fill="white" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="50" cy="-60" r="2" fill="white" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- 鞋跟 -->
+    <path d="M-35,-55 L-35,35 L-25,35 L-25,-45 Q-25,-55 -35,-55" fill="url(#accent2)"/>
+    <!-- 鞋底 -->
+    <path d="M-35,35 Q-15,45 25,40 Q55,35 65,25 Q70,20 65,15 Q60,10 50,13 Q40,15 25,17 Q5,20 -25,15 L-35,35" fill="url(#accent2)"/>
+    <!-- 鞋面 - 华丽设计 -->
+    <path d="M-25,-45 Q-5,-75 35,-65 Q55,-60 60,-45 Q65,-30 55,-20 Q45,-10 25,-15 Q5,-20 -25,-15 L-25,-45" fill="url(#accent2)" opacity="0.95"/>
+    <!-- 装饰性闪光 -->
+    <path d="M-10,-50 L-5,-60 L0,-50 L-5,-40 Z" fill="white" opacity="0.5"/>
+    <path d="M20,-55 L25,-65 L30,-55 L25,-45 Z" fill="white" opacity="0.4"/>
+    <!-- 高光 -->
+    <ellipse cx="15" cy="-40" rx="12" ry="6" fill="white" opacity="0.35"/>
+  </g>
+  
+  <!-- 标题文字 -->
+  <text x="320" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white">佘诗曼同款恨天高</text>
+  <text x="320" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#f093fb">明星红毯必备款</text>
+  
+  <!-- 装饰线条 -->
+  <line x1="220" y1="320" x2="420" y2="320" stroke="url(#accent2)" stroke-width="2" opacity="0.4"/>
+  <circle cx="220" cy="320" r="3" fill="url(#accent2)"/>
+  <circle cx="420" cy="320" r="3" fill="url(#accent2)"/>
 </svg>
