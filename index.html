@@ -19,6 +19,7 @@
             --border-light: #e8eaf4;
             --accent: oklch(0.7 0.2 340);
             --success: oklch(0.65 0.2 150);
+            --hot: oklch(0.6 0.25 30);
             --spacing: 8px;
         }
 
@@ -241,6 +242,38 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
+        .video-card.featured {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0;
+        }
+
+        .video-card.featured .video-thumbnail {
+            aspect-ratio: 16/10;
+        }
+
+        .video-card.featured .video-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: calc(var(--spacing) * 5);
+        }
+
+        .video-card.featured .video-title {
+            font-size: 24px;
+            -webkit-line-clamp: 3;
+        }
+
+        @media (max-width: 768px) {
+            .video-card.featured {
+                grid-template-columns: 1fr;
+            }
+            .video-card.featured .video-thumbnail {
+                aspect-ratio: 16/9;
+            }
+        }
+
         .video-thumbnail {
             position: relative;
             aspect-ratio: 16/9;
@@ -348,6 +381,20 @@
             font-size: 12px;
             font-weight: 600;
             margin-bottom: calc(var(--spacing) * 1);
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 0.5);
+            background: linear-gradient(135deg, oklch(0.95 0.15 280) 0%, oklch(0.92 0.1 300) 100%);
+            color: var(--primary);
+            padding: calc(var(--spacing) * 0.75) calc(var(--spacing) * 1.5);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing) * 1.5);
+            border: 1px solid oklch(0.88 0.1 280);
         }
 
         /* Testimonials */
@@ -515,7 +562,25 @@
                 <p class="section-subtitle">步态观察栏目精选，欣赏高跟鞋美学</p>
             </div>
             <div class="video-grid">
-                <!-- 高跟鞋视频 -->
+                <!-- 精选视频：反人类设计高跟鞋 -->
+                <a href="https://www.langtushijie.com/feed-series/117799873959915520/episode/1" class="video-card featured" target="_blank">
+                    <div class="video-thumbnail">
+                        <img src="https://images.langtushijie.com/feed-series/117799873959915520/cover.jpg" alt="反人类设计高跟鞋" onerror="this.src='thumbnails/featured-thumb.png'">
+                        <div class="video-overlay"></div>
+                        <div class="play-button">▶</div>
+                        <span class="video-duration">精选</span>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-badge">⭐ 今日精选</span>
+                        <h3 class="video-title">反人类设计高跟鞋，最强辅助神器！</h3>
+                        <div class="video-meta">
+                            <span class="video-views">👁️ @GGX</span>
+                            <span>🔥 热门推荐</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 视频1：超高跟鞋收藏家 -->
                 <a href="https://www.langtushijie.com/feed-series/117674991087480832/episode/1" class="video-card" target="_blank">
                     <div class="video-thumbnail">
                         <img src="thumbnails/highheel-thumb.png" alt="超高跟鞋收藏家">
@@ -529,6 +594,42 @@
                         <div class="video-meta">
                             <span class="video-views">👁️ @GGX</span>
                             <span>⏱️ 9:42</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 视频2：佘诗曼恨天高 -->
+                <a href="https://www.langtushijie.com/feed-series/117799902330187776/episode/1" class="video-card" target="_blank">
+                    <div class="video-thumbnail">
+                        <img src="https://images.langtushijie.com/feed-series/117799902330187776/cover.jpg" alt="佘诗曼恨天高" onerror="this.src='thumbnails/video2-thumb.png'">
+                        <div class="video-overlay"></div>
+                        <div class="play-button">▶</div>
+                        <span class="video-duration">热门</span>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-hot">👠 明星同款</span>
+                        <h3 class="video-title">佘诗曼很喜欢的一双恨天高，多次活动现场都穿它</h3>
+                        <div class="video-meta">
+                            <span class="video-views">👁️ @GGX</span>
+                            <span>✨ 推荐</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 视频3：12CM浅口细跟 -->
+                <a href="https://www.langtushijie.com/feed-series/117799876652658688/episode/1" class="video-card" target="_blank">
+                    <div class="video-thumbnail">
+                        <img src="https://images.langtushijie.com/feed-series/117799876652658688/cover.jpg" alt="12CM浅口细跟" onerror="this.src='thumbnails/video3-thumb.png'">
+                        <div class="video-overlay"></div>
+                        <div class="play-button">▶</div>
+                        <span class="video-duration">经典</span>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-hot">💎 经典款</span>
+                        <h3 class="video-title">12CM浅口细跟高跟鞋，经典永不过时！</h3>
+                        <div class="video-meta">
+                            <span class="video-views">👁️ @GGX</span>
+                            <span>👠 细跟</span>
                         </div>
                     </div>
                 </a>
