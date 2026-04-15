@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>晨起硬功夫测验 - 你比同龄人更硬气吗？</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; background: #0a1f0a; }
+.page-container { width: 100vw; height: 100vh; position: relative; background: linear-gradient(180deg, #0d2b1d 0%, #1a3d2e 20%, #0f2918 50%, #1a0f0a 100%); overflow: hidden; }
+.screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; padding: 20px; }
+.screen.active { display: flex; }
+.social-proof-bar { position: absolute; top: 0; left: 0; width: 100%; background: linear-gradient(90deg, rgba(220,38,38,0.9), rgba(180,30,30,0.9)); padding: 8px 15px; display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 100; }
+.social-proof-bar .proof-text { color: #fff; font-size: 13px; }
+.social-proof-bar .proof-num { color: #ffd700; font-weight: 700; }
+.home-screen .header-area { margin-top: 12%; text-align: center; }
+.home-screen .main-title { font-size: 32px; font-weight: 900; color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.8); letter-spacing: 3px; margin-bottom: 8px; }
+.home-screen .sub-title { font-size: 14px; color: #c9b896; letter-spacing: 3px; }
+.home-screen .ancient-seal { margin-top: 15px; padding: 6px 16px; border: 2px solid #dc2626; color: #dc2626; font-size: 12px; letter-spacing: 2px; transform: rotate(-2deg); display: inline-block; }
+.home-screen .character-area { margin-top: 5%; width: 180px; height: 180px; background: radial-gradient(ellipse at center bottom, rgba(255,215,0,0.15) 0%, transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.home-screen .character-silhouette { width: 120px; height: 160px; background: linear-gradient(180deg, #1a0f05 0%, #2d1f0f 30%, #1a1208 100%); border-radius: 40%; box-shadow: 0 0 50px rgba(255,215,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 60px; }
+.home-screen .intro-text { margin-top: 5%; text-align: center; color: #c9b896; font-size: 14px; line-height: 2; padding: 0 30px; }
+.home-screen .intro-text .highlight { color: #ffd700; font-weight: 600; }
+.quiz-screen { justify-content: flex-start; padding-top: 15%; }
+.quiz-progress { width: 85%; max-width: 320px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 25px; overflow: hidden; }
+.quiz-progress-bar { height: 100%; background: linear-gradient(90deg, #ffd700, #ff8c00); border-radius: 3px; transition: width 0.5s ease; }
+.quiz-number { color: #dc2626; font-size: 14px; letter-spacing: 3px; margin-bottom: 12px; font-weight: 600; }
+.quiz-question { color: #fff; font-size: 20px; font-weight: 700; text-align: center; line-height: 1.5; margin-bottom: 8px; padding: 0 20px; }
+.quiz-subtitle { color: #888; font-size: 13px; margin-bottom: 30px; text-align: center; }
+.quiz-options { width: 92%; max-width: 360px; display: flex; flex-direction: column; gap: 12px; }
+.quiz-option { padding: 16px 20px; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); border: 1px solid rgba(255,215,0,0.2); border-radius: 12px; color: #fff; font-size: 15px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+.quiz-option:hover, .quiz-option:active { background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,140,0,0.08) 100%); border-color: rgba(255,215,0,0.5); transform: translateX(5px); }
+.option-tag { display: inline-block; width: 24px; height: 24px; background: rgba(255,215,0,0.2); border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; margin-right: 12px; color: #ffd700; }
+.mid-share-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.mid-share-modal.active { display: flex; }
+.mid-share-content { background: linear-gradient(135deg, #1a3d2e 0%, #0d2b1d 100%); border: 2px solid rgba(255,215,0,0.4); border-radius: 20px; padding: 30px 25px; width: 88%; max-width: 340px; text-align: center; }
+.mid-share-title { color: #ffd700; font-size: 22px; font-weight: 800; margin-bottom: 15px; }
+.mid-share-stats { background: rgba(220,38,38,0.2); border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+.mid-share-stats .stats-num { color: #ffd700; font-size: 32px; font-weight: 800; }
+.mid-share-rewards { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left; }
+.mid-share-rewards .reward-title { color: #ffd700; font-size: 14px; font-weight: 600; margin-bottom: 10px; text-align: center; }
+.mid-share-rewards .reward-item { color: #ccc; font-size: 13px; margin-bottom: 8px; }
+.mid-share-btn { width: 100%; padding: 14px 0; background: linear-gradient(90deg, #07c160, #05a050); border: none; border-radius: 25px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
+.mid-share-skip { color: #888; font-size: 13px; background: none; border: none; cursor: pointer; }
+.result-screen { justify-content: flex-start; padding-top: 5%; overflow-y: auto; }
+.result-badge { width: 100px; height: 100px; background: radial-gradient(circle, rgba(220,38,38,0.3) 0%, transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+.result-badge-inner { width: 70px; height: 70px; background: linear-gradient(135deg, #dc2626, #991b1b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 0 25px rgba(220,38,38,0.6); }
+.result-title { color: #ffd700; font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+.result-subtitle { color: #c9b896; font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
+.result-score { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 12px 25px; background: rgba(0,0,0,0.3); border-radius: 30px; border: 1px solid rgba(255,215,0,0.2); }
+.score-label { color: #888; font-size: 12px; }
+.score-bar { width: 140px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.score-fill { height: 100%; background: linear-gradient(90deg, #dc2626, #ffd700); border-radius: 4px; transition: width 1s ease; }
+.score-value { color: #ffd700; font-size: 18px; font-weight: 700; }
+.result-analysis { width: 92%; max-width: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,215,0,0.15); border-radius: 16px; padding: 18px; margin-bottom: 15px; }
+.analysis-title { color: #ffd700; font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+.analysis-content { color: #ccc; font-size: 13px; line-height: 1.8; }
+.wechat-section { width: 92%; max-width: 360px; background: linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,140,0,0.06) 100%); border: 2px solid rgba(255,215,0,0.4); border-radius: 16px; padding: 20px; margin-bottom: 15px; text-align: center; }
+.wechat-section .gift-icon { font-size: 36px; margin-bottom: 10px; }
+.wechat-section .wechat-title { color: #ffd700; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.wechat-section .wechat-desc { color: #ccc; font-size: 13px; line-height: 1.6; margin-bottom: 15px; }
+.wechat-section .course-list { text-align: left; margin-bottom: 15px; padding: 0 10px; }
+.wechat-section .course-item { color: #aaa; font-size: 12px; margin-bottom: 6px; }
+.wechat-section .wechat-qr { width: 160px; height: 160px; background: #fff; border-radius: 12px; padding: 8px; margin: 0 auto 12px; }
+.wechat-section .wechat-qr img { width: 100%; height: 100%; object-fit: contain; }
+.wechat-section .urgency-text { color: #dc2626; font-size: 12px; margin-top: 10px; }
+.share-section { width: 92%; max-width: 360px; background: linear-gradient(135deg, rgba(7,193,96,0.1) 0%, rgba(5,160,80,0.05) 100%); border: 1px solid rgba(7,193,96,0.3); border-radius: 16px; padding: 18px; margin-bottom: 15px; }
+.share-section .share-title { color: #07c160; font-size: 16px; font-weight: 700; margin-bottom: 12px; text-align: center; }
+.share-section .unlocked { background: rgba(255,215,0,0.1); border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+.share-section .unlocked-title { color: #ffd700; font-size: 12px; margin-bottom: 5px; }
+.share-section .unlocked-item { color: #888; font-size: 12px; }
+.share-section .locked { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+.share-section .locked-title { color: #ffd700; font-size: 12px; margin-bottom: 8px; }
+.share-section .locked-item { color: #aaa; font-size: 12px; margin-bottom: 5px; }
+.share-btn { width: 100%; padding: 14px 0; background: linear-gradient(135deg, #07c160 0%, #05a050 100%); border: none; border-radius: 25px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+.cta-button { width: 92%; max-width: 360px; height: 56px; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%); border: none; border-radius: 28px; color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; margin-bottom: 12px; }
+.share-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.share-modal.active { display: flex; }
+.share-modal-content { background: linear-gradient(135deg, #1a3d2e 0%, #0d2b1d 100%); border: 2px solid rgba(255,215,0,0.4); border-radius: 20px; padding: 25px; width: 88%; max-width: 320px; text-align: center; }
+.share-modal-title { color: #ffd700; font-size: 20px; font-weight: 700; margin-bottom: 15px; }
+.share-reward-box { background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+.share-reward-box .reward-title { color: #ffd700; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.share-reward-box .reward-item { color: #ccc; font-size: 13px; margin-bottom: 6px; }
+.share-modal-btn { width: 100%; padding: 14px 0; background: linear-gradient(90deg, #07c160, #05a050); border: none; border-radius: 25px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
+.share-modal-close { color: #888; font-size: 13px; background: none; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="page-container">
+
+<!-- 首页 -->
+<div class="screen home-screen active" id="homeScreen">
+<div class="social-proof-bar">
+<span style="color:#fff;font-size:13px;">🔥 已有 <span style="color:#ffd700;font-weight:700;">28,456</span> 位兄弟参与</span>
+</div>
+<div class="header-area" style="margin-top:15%;">
+<h1 class="main-title">晨起硬功夫测验</h1>
+<p class="sub-title">你比同龄人更"硬"气吗？</p>
+<div class="ancient-seal">古法壮腰 | 男人必修</div>
+</div>
+<div class="character-area">
+<div class="character-silhouette">💪</div>
+</div>
+<div class="intro-text">
+<p>3分钟自测，看清你的<span class="highlight">真实硬度水平</span></p>
+<p style="margin-top:10px;">一柱擎天还是软绵绵？<br>测完就知道！</p>
+</div>
+<button class="cta-button" onclick="startQuiz()" style="margin-top:30px;">立即开始测试</button>
+</div>
+
+<!-- 测试页 -->
+<div class="screen quiz-screen" id="quizScreen">
+<div class="quiz-progress">
+<div class="quiz-progress-bar" id="progressBar" style="width:0%"></div>
+</div>
+<div class="quiz-number" id="quizNumber">第 1/10 题</div>
+<div class="quiz-question" id="quizQuestion">题目加载中...</div>
+<div class="quiz-subtitle" id="quizSubtitle">请诚实选择，结果更准</div>
+<div class="quiz-options" id="quizOptions"></div>
+</div>
+
+<!-- 中途分享弹窗 -->
+<div class="mid-share-modal" id="midShareModal">
+<div class="mid-share-content">
+<div class="mid-share-title">🎯 再答5题生成你的硬度报告</div>
+<div class="mid-share-stats">
+<div class="stats-num">87%</div>
+<div style="color:#fff;font-size:14px;margin-top:5px;">的兄弟选择分享解锁奖励</div>
+</div>
+<div class="mid-share-rewards">
+<div class="reward-title">🎁 分享后立即获得：</div>
+<div class="reward-item">✓ 《晨起硬功夫》第1集视频</div>
+<div class="reward-item">✓ 个人专属调理方案</div>
+<div class="reward-item">✓ 1对1导师咨询资格</div>
+</div>
+<button class="mid-share-btn" onclick="handleMidShare()">立即分享解锁</button>
+<button class="mid-share-skip" onclick="skipMidShare()">继续答题</button>
+</div>
+</div>
+
+<!-- 结果页 -->
+<div class="screen result-screen" id="resultScreen">
+<div class="result-badge">
+<div class="result-badge-inner">📊</div>
+</div>
+<div class="result-title" id="resultTitle">一柱擎天</div>
+<div class="result-subtitle" id="resultSubtitle">行走的荷尔蒙</div>
+<div class="result-score">
+<span class="score-label">硬度指数</span>
+<div class="score-bar">
+<div class="score-fill" id="scoreFill" style="width:0%"></div>
+</div>
+<span class="score-value" id="scoreValue">0分</span>
+</div>
+<div class="result-analysis">
+<div class="analysis-title">📋 硬度分析</div>
+<div class="analysis-content" id="analysisContent">分析内容加载中...</div>
+</div>
+
+<!-- 微信留资 -->
+<div class="wechat-section">
+<div class="gift-icon">🎁</div>
+<div class="wechat-title">加微信领《晨起硬功夫》</div>
+<div class="wechat-desc">4集壮腰功法视频课</div>
+<div class="course-list">
+<div class="course-item">第1集：3分钟晨起激活术</div>
+<div class="course-item">第2集：持久硬度训练法</div>
+<div class="course-item">第3集：肾虚调理秘方</div>
+<div class="course-item">第4集：实战技巧指导</div>
+</div>
+<div class="wechat-qr">
+<img src="wechat-qr.png" alt="扫码加微信" id="wechatQR">
+</div>
+<div class="urgency-text">⏰ 限时福利，今日仅剩 <span id="courseSlots">23</span> 个名额</div>
+</div>
+
+<!-- 分享解锁 -->
+<div class="share-section">
+<div class="share-title">🎁 分享解锁完整奖励</div>
+<div class="unlocked">
+<div class="unlocked-title">✓ 已解锁：</div>
+<div class="unlocked-item">硬度指数报告</div>
+</div>
+<div class="locked">
+<div class="locked-title">🔒 分享后解锁：</div>
+<div class="locked-item">🎁 4集完整视频课程</div>
+<div class="locked-item">🎁 道家壮腰功法PDF</div>
+<div class="locked-item">🎁 专属食疗方案</div>
+</div>
+<button class="share-btn" onclick="handleShare()">分享解锁全部奖励</button>
+</div>
+</div>
+
+<!-- 分享弹窗 -->
+<div class="share-modal" id="shareModal">
+<div class="share-modal-content">
+<div class="share-modal-title">🎁 分享解锁全部奖励</div>
+<div class="share-reward-box">
+<div class="reward-title">分享后立即获得：</div>
+<div class="reward-item">✓ 4集《晨起硬功夫》视频</div>
+<div class="reward-item">✓ 道家壮腰功法PDF</div>
+<div class="reward-item">✓ 专属食疗方案</div>
+</div>
+<button class="share-modal-btn" onclick="nativeShare()">立即分享</button>
+<button class="share-modal-close" onclick="closeShareModal()">稍后再说</button>
+</div>
+</div>
+
+</div>
+
+<script>
+// 题目数据
+const quizData = [
+{question: "早上醒来\"状态\"如何？", subtitle: "晨勃是男人健康的晴雨表", options: [{text: "每天准时一柱擎天", score: 10}, {text: "偶尔有反应", score: 5}, {text: "很少或没有", score: 0}]},
+{question: "\"升旗\"持续多久？", subtitle: "持续时间反映血管健康", options: [{text: "15分钟以上", score: 10}, {text: "5-15分钟", score: 5}, {text: "很快消退", score: 0}]},
+{question: "夜间\"站岗\"几次？", subtitle: "健康男性每晚应有2-3次", options: [{text: "2-3次正常", score: 10}, {text: "1次", score: 5}, {text: "几乎没有", score: 0}]},
+{question: "关键时刻撑多久？", subtitle: "实战表现最真实", options: [{text: "15分钟以上", score: 10}, {text: "5-15分钟", score: 5}, {text: "不到5分钟", score: 0}]},
+{question: "\"硬度\"自评？", subtitle: "黄瓜级才是理想状态", options: [{text: "黄瓜级（硬邦邦）", score: 10}, {text: "香蕉级（还行）", score: 5}, {text: "豆腐级（软）", score: 0}]},
+{question: "第二天\"恢复\"情况？", subtitle: "恢复速度反映肾气水平", options: [{text: "很快又能战", score: 10}, {text: "需要休息1天", score: 5}, {text: "好几天缓不过来", score: 0}]},
+{question: "欲望强烈度？", subtitle: "性欲是雄激素的晴雨表", options: [{text: "很强烈", score: 10}, {text: "一般", score: 5}, {text: "明显下降", score: 0}]},
+{question: "腰酸+精神状态？", subtitle: "腰为肾之府", options: [{text: "腰板硬朗精神好", score: 10}, {text: "偶尔腰酸", score: 5}, {text: "经常腰酸疲惫", score: 0}]},
+{question: "头发+皮肤状态？", subtitle: "肾其华在发", options: [{text: "浓密有光泽", score: 10}, {text: "一般", score: 5}, {text: "脱发暗沉", score: 0}]},
+{question: "熬夜/久坐/压力大？", subtitle: "这些最伤男人", options: [{text: "很少", score: 10}, {text: "偶尔", score: 5}, {text: "经常", score: 0}]}
+];
+
+// 结果数据
+const resultData = {
+excellent: {title: "🏆 一柱擎天", subtitle: "行走的荷尔蒙", analysis: "你的硬度状态<span class='warning'>非常优秀</span>！说明肾气充足、血液循环良好。但也要注意，<span class='warning'>30岁后自然衰退</span>，建议学习《晨起硬功夫》，<span class='solution'>让好状态持续更久</span>。"},
+good: {title: "⚠️ 半旗状态", subtitle: "开始下滑了", analysis: "你的硬度已经出现<span class='warning'>下滑趋势</span>，这是长期熬夜、压力大的结果。如果不及时调理，<span class='warning'>1-2年内可能出现严重问题</span>。好消息是，通过《晨起硬功夫》，<span class='solution'>12天即可看到明显改善</span>。"},
+poor: {title: "🚨 软绵绵预警", subtitle: "再不救就晚了", analysis: "你的硬度状态<span class='warning'>已经危险</span>！晨勃少、持续短都是严重信号。很多男人到了这个阶段才开始重视，但往往<span class='warning'>为时已晚</span>。《晨起硬功夫》是<span class='solution'>最后的自救机会</span>，12天古法壮腰，帮你重回巅峰。"},
+critical: {title: "💔 雄风不再", subtitle: "最后自救机会", analysis: "你的硬度状态<span class='warning'>非常危险</span>！几乎没有晨勃、实战困难，这是肾气严重亏虚的表现。《晨起硬功夫》<span class='solution'>是你最后的机会</span>，错过可能再难恢复，立即行动！"}
+};
+
+let currentQuestion = 0;
+let totalScore = 0;
+let hasShared = false;
+
+function startQuiz() {
+document.getElementById('homeScreen').classList.remove('active');
+document.getElementById('quizScreen').classList.add('active');
+showQuestion();
+}
+
+function showQuestion() {
+const q = quizData[currentQuestion];
+document.getElementById('quizNumber').textContent = `第 ${currentQuestion + 1}/10 题`;
+document.getElementById('quizQuestion').textContent = q.question;
+document.getElementById('quizSubtitle').textContent = q.subtitle;
+document.getElementById('progressBar').style.width = `${(currentQuestion / 10) * 100}%`;
+
+let html = '';
+q.options.forEach((opt, idx) => {
+html += `<div class="quiz-option" onclick="selectOption(${opt.score})"><span class="option-tag">${String.fromCharCode(65 + idx)}</span>${opt.text}</div>`;
+});
+document.getElementById('quizOptions').innerHTML = html;
+
+// 第5题后显示分享弹窗
+if (currentQuestion === 5) {
+setTimeout(() => {
+document.getElementById('midShareModal').classList.add('active');
+}, 500);
+}
+}
+
+function selectOption(score) {
+totalScore += score;
+currentQuestion++;
+if (currentQuestion < quizData.length) {
+showQuestion();
+} else {
+showResult();
+}
+}
+
+function showResult() {
+document.getElementById('quizScreen').classList.remove('active');
+document.getElementById('resultScreen').classList.add('active');
+
+let result;
+if (totalScore >= 81) result = resultData.excellent;
+else if (totalScore >= 61) result = resultData.good;
+else if (totalScore >= 41) result = resultData.poor;
+else result = resultData.critical;
+
+document.getElementById('resultTitle').textContent = result.title;
+document.getElementById('resultSubtitle').textContent = result.subtitle;
+document.getElementById('scoreValue').textContent = totalScore + '分';
+document.getElementById('analysisContent').innerHTML = result.analysis;
+
+setTimeout(() => {
+document.getElementById('scoreFill').style.width = totalScore + '%';
+}, 300);
+
+// 随机名额
+const slots = Math.floor(Math.random() * 15) + 8;
+document.getElementById('courseSlots').textContent = slots;
+}
+
+function handleMidShare() {
+shareAction(() => {
+hasShared = true;
+document.getElementById('midShareModal').classList.remove('active');
+showToast('🎁 奖励已解锁！继续答题');
+});
+}
+
+function skipMidShare() {
+document.getElementById('midShareModal').classList.remove('active');
+}
+
+function handleShare() {
+document.getElementById('shareModal').classList.add('active');
+}
+
+function nativeShare() {
+shareAction(() => {
+hasShared = true;
+document.getElementById('shareModal').classList.remove('active');
+showToast('🎁 全部奖励已解锁！');
+// 更新UI显示已解锁
+});
+}
+
+function closeShareModal() {
+document.getElementById('shareModal').classList.remove('active');
+}
+
+function shareAction(callback) {
+const shareText = `我的硬度指数${totalScore}分！分享了就能领4集壮腰视频，兄弟快来！`;
+const shareUrl = window.location.href;
+
+if (navigator.share) {
+navigator.share({title: '晨起硬功夫测验', text: shareText, url: shareUrl}).then(callback);
+} else {
+// 复制到剪贴板
+const text = shareText + ' ' + shareUrl;
+if (navigator.clipboard) {
+navigator.clipboard.writeText(text).then(callback);
+} else {
+const input = document.createElement('textarea');
+input.value = text;
+document.body.appendChild(input);
+input.select();
+document.execCommand('copy');
+document.body.removeChild(input);
+callback();
+}
+showToast('分享内容已复制，快去粘贴分享吧！');
+}
+}
+
+function showToast(msg) {
+const toast = document.createElement('div');
+toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);color:#fff;padding:15px 25px;border-radius:8px;font-size:14px;z-index:9999;';
+toast.textContent = msg;
+document.body.appendChild(toast);
+setTimeout(() => toast.remove(), 2500);
+}
+</script>
+</body>
+</html>
