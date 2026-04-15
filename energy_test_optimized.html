@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>晨起硬功夫测验 - 你比同龄人更硬气吗？</title>
+<meta property="og:title" content="晨起硬功夫测验 - 你比同龄人更硬气吗？">
+<meta property="og:description" content="3分钟自测，看清你的真实硬度水平！一柱擎天还是软绵绵？测完就知道！">
+<meta property="og:image" content="share-icon.png">
+<meta property="og:url" content="">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; background: #0a1f0a; }
@@ -83,6 +87,11 @@ body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidd
 .share-reward-box .reward-item { color: #ccc; font-size: 13px; margin-bottom: 6px; }
 .share-modal-btn { width: 100%; padding: 14px 0; background: linear-gradient(90deg, #07c160, #05a050); border: none; border-radius: 25px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
 .share-modal-close { color: #888; font-size: 13px; background: none; border: none; cursor: pointer; }
+.wechat-share-guide { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 2000; }
+.wechat-share-guide.active { display: block; }
+.wechat-share-arrow { position: absolute; top: 15px; right: 20px; font-size: 50px; color: #fff; animation: arrowBounce 1s ease infinite; }
+.wechat-share-text { position: absolute; top: 80px; right: 20px; color: #fff; font-size: 16px; text-align: right; line-height: 1.6; background: rgba(255,215,0,0.2); padding: 15px 20px; border-radius: 10px; border: 1px solid rgba(255,215,0,0.4); }
+@keyframes arrowBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 </style>
 </head>
 <body>
@@ -191,6 +200,12 @@ body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidd
 </div>
 </div>
 
+<!-- 微信分享引导蒙层 -->
+<div class="wechat-share-guide" id="wechatShareGuide" onclick="closeWechatShareGuide()">
+<div class="wechat-share-arrow">👆</div>
+<div class="wechat-share-text">点击右上角「···」<br>分享给朋友或朋友圈</div>
+</div>
+
 <!-- 分享弹窗 -->
 <div class="share-modal" id="shareModal">
 <div class="share-modal-content">
@@ -208,7 +223,63 @@ body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidd
 
 </div>
 
+<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 <script>
+// 微信分享配置
+function initWeChatShare() {
+// 这里需要后端配合获取签名，以下为前端配置示例
+const shareConfig = {
+title: '晨起硬功夫测验 - 你比同龄人更硬气吗？',
+desc: '3分钟自测，看清你的真实硬度水平！一柱擎天还是软绵绵？测完就知道！',
+link: window.location.href,
+imgUrl: window.location.origin + '/share-icon.png', // 分享图标
+success: function() {
+hasShared = true;
+showToast('🎁 分享成功！奖励已解锁');
+},
+cancel: function() {
+showToast('分享已取消');
+}
+};
+
+// 如果页面在微信环境中
+if (typeof wx !== 'undefined' && wx.config) {
+// 需要后端提供签名数据
+// wx.config({
+//     debug: false,
+//     appId: 'YOUR_APP_ID',
+//     timestamp: TIMESTAMP,
+//     nonceStr: 'NONCE_STR',
+//     signature: 'SIGNATURE',
+//     jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline']
+// });
+
+wx.ready(function() {
+// 分享给朋友
+wx.updateAppMessageShareData({
+title: shareConfig.title,
+desc: shareConfig.desc,
+link: shareConfig.link,
+imgUrl: shareConfig.imgUrl,
+success: shareConfig.success,
+cancel: shareConfig.cancel
+});
+
+// 分享到朋友圈
+wx.updateTimelineShareData({
+title: shareConfig.title + ' - ' + shareConfig.desc,
+link: shareConfig.link,
+imgUrl: shareConfig.imgUrl,
+success: shareConfig.success,
+cancel: shareConfig.cancel
+});
+});
+}
+}
+
+// 页面加载完成后初始化微信分享
+document.addEventListener('DOMContentLoaded', initWeChatShare);
+
 // 题目数据
 const quizData = [
 {question: "早上醒来\"状态\"如何？", subtitle: "晨勃是男人健康的晴雨表", options: [{text: "每天准时一柱擎天", score: 10}, {text: "偶尔有反应", score: 5}, {text: "很少或没有", score: 0}]},
@@ -329,6 +400,16 @@ function shareAction(callback) {
 const shareText = `我的硬度指数${totalScore}分！分享了就能领4集壮腰视频，兄弟快来！`;
 const shareUrl = window.location.href;
 
+// 检测是否在微信环境
+const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+
+if (isWechat) {
+// 微信环境显示分享引导
+showWechatShareGuide();
+if (callback) callback();
+return;
+}
+
 if (navigator.share) {
 navigator.share({title: '晨起硬功夫测验', text: shareText, url: shareUrl}).then(callback);
 } else {
@@ -347,6 +428,14 @@ callback();
 }
 showToast('分享内容已复制，快去粘贴分享吧！');
 }
+}
+
+function showWechatShareGuide() {
+document.getElementById('wechatShareGuide').classList.add('active');
+}
+
+function closeWechatShareGuide() {
+document.getElementById('wechatShareGuide').classList.remove('active');
 }
 
 function showToast(msg) {
