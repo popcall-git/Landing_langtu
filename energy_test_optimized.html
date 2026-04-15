@@ -142,7 +142,7 @@ body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidd
 <div class="reward-item">✓ 个人专属调理方案</div>
 <div class="reward-item">✓ 1对1导师咨询资格</div>
 </div>
-<button class="mid-share-btn" onclick="handleMidShare()">📤 分享到微信解锁</button>
+<button class="mid-share-btn" onclick="sharePage()">📤 分享到微信解锁</button>
 <button class="mid-share-skip" onclick="skipMidShare()">继续答题</button>
 </div>
 </div>
@@ -196,7 +196,7 @@ body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidd
 <div class="locked-item">🎁 道家壮腰功法PDF</div>
 <div class="locked-item">🎁 专属食疗方案</div>
 </div>
-<button class="share-btn" onclick="handleShare()">📤 分享到微信解锁全部奖励</button>
+<button class="share-btn" onclick="sharePage()">📤 分享到微信解锁全部奖励</button>
 </div>
 </div>
 
@@ -367,36 +367,7 @@ const slots = Math.floor(Math.random() * 15) + 8;
 document.getElementById('courseSlots').textContent = slots;
 }
 
-function handleMidShare() {
-shareAction(() => {
-hasShared = true;
-document.getElementById('midShareModal').classList.remove('active');
-showToast('🎁 奖励已解锁！继续答题');
-});
-}
-
-function skipMidShare() {
-document.getElementById('midShareModal').classList.remove('active');
-}
-
-function handleShare() {
-document.getElementById('shareModal').classList.add('active');
-}
-
-function nativeShare() {
-shareAction(() => {
-hasShared = true;
-document.getElementById('shareModal').classList.remove('active');
-showToast('🎁 全部奖励已解锁！');
-// 更新UI显示已解锁
-});
-}
-
-function closeShareModal() {
-document.getElementById('shareModal').classList.remove('active');
-}
-
-function shareAction(callback) {
+function sharePage() {
 const shareText = `我的硬度指数${totalScore}分！分享了就能领4集壮腰视频，兄弟快来！`;
 const shareUrl = window.location.href;
 
@@ -404,19 +375,34 @@ const shareUrl = window.location.href;
 const isWechat = /MicroMessenger/i.test(navigator.userAgent);
 
 if (isWechat) {
-// 微信环境显示分享引导
+// 微信环境显示分享引导蒙层
 showWechatShareGuide();
-if (callback) callback();
+hasShared = true;
+// 关闭中途分享弹窗（如果在显示）
+document.getElementById('midShareModal').classList.remove('active');
 return;
 }
 
+// 非微信环境，使用原生分享或复制链接
 if (navigator.share) {
-navigator.share({title: '晨起硬功夫测验', text: shareText, url: shareUrl}).then(callback);
+navigator.share({
+title: '晨起硬功夫测验',
+text: shareText,
+url: shareUrl
+}).then(() => {
+hasShared = true;
+document.getElementById('midShareModal').classList.remove('active');
+showToast('🎁 分享成功！奖励已解锁');
+});
 } else {
 // 复制到剪贴板
 const text = shareText + ' ' + shareUrl;
 if (navigator.clipboard) {
-navigator.clipboard.writeText(text).then(callback);
+navigator.clipboard.writeText(text).then(() => {
+hasShared = true;
+document.getElementById('midShareModal').classList.remove('active');
+showToast('分享内容已复制，快去粘贴分享吧！');
+});
 } else {
 const input = document.createElement('textarea');
 input.value = text;
@@ -424,10 +410,27 @@ document.body.appendChild(input);
 input.select();
 document.execCommand('copy');
 document.body.removeChild(input);
-callback();
-}
+hasShared = true;
+document.getElementById('midShareModal').classList.remove('active');
 showToast('分享内容已复制，快去粘贴分享吧！');
 }
+}
+}
+
+function skipMidShare() {
+document.getElementById('midShareModal').classList.remove('active');
+}
+
+function handleShare() {
+sharePage();
+}
+
+function nativeShare() {
+sharePage();
+}
+
+function closeShareModal() {
+document.getElementById('shareModal').classList.remove('active');
 }
 
 function showWechatShareGuide() {
